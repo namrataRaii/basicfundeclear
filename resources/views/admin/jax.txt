@@ -1,0 +1,1168 @@
+$(document).ready(function() {
+    // Add event listener for form submission
+    $('#profileForm').on('submit', function(e) {
+        var formAction = $(this);
+        var btnAction = $('#formBtn');
+        var spinAction = $('#formSpin');
+        e.preventDefault();
+        var data = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: $(formAction).attr('action'),
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                $(btnAction).attr("disabled", true);
+                $(spinAction).show();
+            },
+            success: function(response) {
+                // console.log(response);
+                var response = JSON.parse(response);
+                $(btnAction).removeAttr("disabled");
+                $(spinAction).hide();
+                if (response[0].res == 'success') {
+                    toastr.success(response[0].msg); // Using toastr for success message
+                    if (response[0].redirect) {
+                        window.setTimeout(function() {
+                            window.location.href = response[0].redirect;
+                        }, 1000);
+                    }
+                } else if (response[0].res == 'error') {
+                    toastr.error(response[0].msg); // Using toastr for error message
+
+                }
+            },
+
+            error: function(xhr) {
+                var errorMessage = "Error occurred while processing your request";
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    errorMessage = xhr.responseJSON.errors[Object.keys(xhr.responseJSON.errors)[0]][0];
+                }
+                toastr.error(errorMessage);
+            }
+        });
+
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- jquery.vectormap map -->
+    <script src="{{ asset('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js') }}"></script>
+
+    <!-- Required datatable js -->
+    <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Responsive examples -->
+    <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    
+
+    <script src="{{ asset('assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
+    <!-- Responsive examples -->
+    <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+<!-- Datatable init js -->
+<script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+
+
+
+
+
+
+
+  <!-- App favicon -->
+  <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover.css" integrity="sha512-Qg72y9f1a3aVc1FVnjq5YURLOOG8fDKQjMnhxYaZgBz4nIVjpVOBUtuMMMqkZPS1FlVrzzEBXq2sM6Qp1zen/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Responsive datatable examples -->
+
+<link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<!-- jquery.vectormap css -->
+<link href="{{ asset('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet" type="text/css" />
+
+
+<!-- Responsive datatable examples -->
+<link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<!--TimePicker-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.14.1/jquery.timepicker.min.css" integrity="sha512-WlaNl0+Upj44uL9cq9cgIWSobsjEOD1H7GK1Ny1gmwl43sO0QAUxVpvX2x+5iQz/C60J3+bM7V07aC/CNWt/Yw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+
+//website
+<!-- <script>
+    $('form').parsley();
+    $('#email').keypress(function(e) {
+        if (this.value.length === 0 && e.which === 32) e.preventDefault();
+    });
+    $('#username').keypress(function(e) {
+        if (this.value.length === 0 && e.which === 32) e.preventDefault();
+    });
+    $('#message').keypress(function(e) {
+        if (this.value.length === 0 && e.which === 32) e.preventDefault();
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var video = document.getElementById('myVideo');
+
+
+        document.addEventListener('mousemove', function(event) {
+            video.muted = false;
+            video.play();
+        });
+
+        // Autoplay the video muted initially
+        video.muted = true;
+        video.play();
+    });
+</script> -->
+
+
+
+    <!-- <script src="{{asset('assets/webassets/fontawesome/js/all.min.js')}}"></script> -->
+    
+    <!-- <link rel="stylesheet" href="{{asset('assets/webassets/fontawesome/css/all.min.css')}}"> -->
+
+     <script src="{{asset('assets/webassets/js/vendor/jquery-3.6.0.min.js')}}"></script>
+
+
+         <!-- <section class="slider-area slider-bg" data-background="{{ asset('assets/webassets/img/banner/s_slider_bg.jpg') }}">
+        <div class="slider-active mt-5">
+            <div class="slider-item">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 order-0 order-lg-2">
+                            <div class="slider-img text-center" data-animation="fadeInRight" data-delay="1s">
+                                @if (!empty($indexcontent->content))
+                                @if (Str::contains($indexcontent->content, ['.mp4', '.avi', '.mov', '.wmv']))
+                                <video class="video_bfc_content24" id="myVideo" loop controls muted>
+                                    <source src="{{ Storage::disk('s3')->url($indexcontent->content) }}" type="video/mp4">
+                                    <source src="movie.ogg" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                </video>
+                                @else
+                                <img class="video_bfc_content24" src="{{ Storage::disk('s3')->url($indexcontent->content) }}" alt="">
+                                @endif
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="banner-content">
+                                <h6 class="sub-title" data-animation="fadeInUp" data-delay=".2s">{{ $indexcontent->heading }}</h6>
+                                <h2 class="title" data-animation="fadeInUp" data-delay=".4s">{!! $indexcontent->subheading !!}</h2>
+                                <div class="banner-meta" data-animation="fadeInUp" data-delay=".6s">
+                                    <p>{!! $indexcontent->description !!}</p>
+                                    <ul>
+                                        @if (!empty($indexcontent->attribute))
+                                        @php
+                                        $attributes = json_decode($indexcontent->attribute);
+                                        $totalItems = count($attributes);
+                                        @endphp
+                                        @foreach ($attributes as $index => $item)
+                                        <li class="category" style="margin-right: 7px;">
+                                            <span>{{ $item->value }}{{ $index < $totalItems - 1 ? ',' : '' }}</span>
+                                        </li>
+                                        @endforeach
+                                        @endif
+
+                                        <li class="release-time">
+                                            <span><i class="far fa-calendar-alt"></i> {{ date('Y') }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="{{ $indexcontent->watchlink }}" class="banner-btn btn mediabox" data-animation="fadeInUp" data-delay=".8s">
+                                    <i class="fas fa-play"></i> Watch Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    
+
+    <section class="slider-area slider-bg" data-background="{{ asset('assets/webassets/img/banner/s_slider_bg.jpg') }}">
+    <div class="slider-active mt-5">
+        <div class="slider-item">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 order-0 order-lg-2">
+                        <div class="slider-img text-center" data-animation="fadeInRight" data-delay="1s">
+                            @if (!empty($indexcontent->content))
+                                @if (Str::contains($indexcontent->content, ['.mp4', '.avi', '.mov', '.wmv']))
+                                <video class="video_bfc_content24 lazyload" id="myVideo" loop controls muted data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}">
+                                            <source data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" type="video/mp4">
+                                            <source data-src="movie.ogg" type="video/ogg">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                @else
+                                    <img class="video_bfc_content24 lazyload" data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" alt="">
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="banner-content">
+                            <h6 class="sub-title" data-animation="fadeInUp" data-delay=".2s">{{ $indexcontent->heading }}</h6>
+                            <h2 class="title" data-animation="fadeInUp" data-delay=".4s">{!! $indexcontent->subheading !!}</h2>
+                            <div class="banner-meta" data-animation="fadeInUp" data-delay=".6s">
+                                <p>{!! $indexcontent->description !!}</p>
+                                <ul>
+                                    @if (!empty($indexcontent->attribute))
+                                        @php
+                                            $attributes = json_decode($indexcontent->attribute);
+                                            $totalItems = count($attributes);
+                                        @endphp
+                                        @foreach ($attributes as $index => $item)
+                                            <li class="category" style="margin-right: 7px;">
+                                                <span>{{ $item->value }}{{ $index < $totalItems - 1 ? ',' : '' }}</span>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                    <li class="release-time">
+                                        <span><i class="far fa-calendar-alt"></i> {{ date('Y') }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a href="{{ $indexcontent->watchlink }}" class="banner-btn btn mediabox" data-animation="fadeInUp" data-delay=".8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--- index page code----->
+
+@extends('website.websitelayout.master')
+@section('content')
+
+<!-- main-area -->
+<main>
+
+    <!-- slider-area -->
+    <section class="slider-area slider-bg " data-background="{{ asset('assets/webassets/img/banner/s_slider_bg.jpg') }}">
+    <div class="slider-active mt-5">
+        <div class="slider-item">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 order-0 order-lg-2">
+                        <div class="slider-img text-center" data-animation="fadeInRight" data-delay="1s">
+                            @if (!empty($indexcontent->content))
+                                @if (Str::contains($indexcontent->content, ['.mp4', '.avi', '.mov', '.wmv']))
+                                    <div class="video-container">
+                                        <canvas class="video-thumbnail d-none" id="videoCanvas"></canvas>
+                                        <video class="video_bfc_content24 lazyload" id="myVideo" loop controls muted data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}">
+                                            <source data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" type="video/mp4">
+                                            <source data-src="movie.ogg" type="video/ogg">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                @else
+                                    <img class="video_bfc_content24 lazyload" data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" alt="">
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="banner-content">
+                            <h6 class="sub-title" data-animation="fadeInUp" data-delay=".2s">{{ $indexcontent->heading }}</h6>
+                            <h2 class="title" data-animation="fadeInUp" data-delay=".4s">{!! $indexcontent->subheading !!}</h2>
+                            <div class="banner-meta" data-animation="fadeInUp" data-delay=".6s">
+                                <p>{!! $indexcontent->description !!}</p>
+                                <ul>
+                                    @if (!empty($indexcontent->attribute))
+                                        @php
+                                            $attributes = json_decode($indexcontent->attribute);
+                                            $totalItems = count($attributes);
+                                        @endphp
+                                        @foreach ($attributes as $index => $item)
+                                            <li class="category" style="margin-right: 7px;">
+                                                <span>{{ $item->value }}{{ $index < $totalItems - 1 ? ',' : '' }}</span>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                    <li class="release-time">
+                                        <span><i class="far fa-calendar-alt"></i> {{ date('Y') }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a href="{{ $indexcontent->watchlink }}" class="banner-btn btn mediabox" data-animation="fadeInUp" data-delay=".8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- slider-area-end -->
+   
+<!-- Top Show-area -->
+<section id="our_bfc_showsfunde17" class="ucm-area ucm-bg lazy-section" >
+    <div class="ucm-bg-shape" data-background="{{ asset('assets/webassets/img/bg/ucm_bg_shape.png') }}"></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $firstsectionsheadings->heading }}</h2>
+                    <span class="teal-text">{!! $firstsectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel top-show-bfcnav-arrow">
+                    @foreach($showtypes as $showtype)
+                    <div class="gallery-item movie-item mb-50" style="display: none;">
+                        @php
+                        // Generate a short hashed representation of the ID
+                        $shortId = base64_encode($showtype->id);
+                        // Construct the URL with parameters
+                        $url = route('showdetails', [
+                            'title' => str_replace(' ', '_', $showtype->title),
+                            'subtitle' => str_replace(' ', '_', $showtype->subtitle),
+                            'id' => $shortId
+                        ]);
+                        @endphp
+                        <a href="{{ $url }}">
+                            <div>
+                                <div class="movie-poster fixed-img-clear">
+                                    <img data-src="{{ Storage::disk('s3')->url($showtype->thumbnail) }}" alt="{{ $showtype->title }}" class="lazy" loading="lazy">
+                                </div>
+                                <div class="movie-content text-left">
+                                    <div class="top d-block">
+                                        <h5 class="title">{{ $showtype->title }}</h5>
+                                    </div>
+                                    <div class="top">
+                                        <h4 class="title logo_color">{{ $showtype->assigned_shows_count }} episodes</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!--Show-end -->
+
+<!-- Show-area -->
+<section id="show-section" class="ucm-area ucm-bg lazy-section">
+    <div class="ucm-bg-shape"></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $secondsectionsheadings->heading }}</h2>
+                    <span class="teal-text">{!! $secondsectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel top-show-bfcnav-arrow">
+                    @foreach($shows as $show)
+                    <div class="gallery-item movie-item" style="display: none;">
+                        <img data-src="{{ Storage::disk('s3')->url($show->thumbnail) }}" alt="{{ $show->title }}" class="lazy" loading="lazy">
+                        <div class="play-btn-watch bfc-long-video">
+                            <a href="{{ $show->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--Show assign--->
+@foreach($assignshowtypes as $index => $showtype)
+@php
+$backgroundImage = $index % 2 === 0 ? asset('assets/webassets/img/bg/ucm_bg.jpg') : '';
+@endphp
+<section class="ucm-area ucm-bg lazy-section lazy-bg" data-background="{{ $backgroundImage }}"> <!-- Added 'lazy-section' class -->
+    <div class="ucm-bg-shape lazy-bg" @if($index % 2 === 0) data-background="{{ asset('assets/webassets/img/bg/ucm_bg_shape.png') }}" @endif></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $showtype->title }}</h2>
+                    <span class="teal-text">{{ $showtype->subtitle }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel">
+                    @foreach($showassigns->where('showtype_id', $showtype->id) as $showassign)
+                    <div class="movie-item mb-50">
+                        <div class="play-btn-watch">
+                            <a href="{{ $showassign->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                        <div>
+                            <div class="movie-poster">
+                                <img src="{{ Storage::disk('s3')->url($showassign->thumbnail) }}" alt="{{ $showassign->title }}" onerror="this.onerror=null; this.src='{{ asset('assets/webassets/img/imgnotavailable.svg') }}'; this.classList.add('default-image');" loading="lazy"> <!-- Added loading="lazy" attribute -->
+                            </div>
+                            <div class="movie-content">
+                                <div class="top d-block">
+                                    <h5 class="title">{!! Str::limit(strip_tags($showassign->title), 34) !!}</h5>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><span class="quality">hd</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endforeach
+
+    <!--Show assign end--->
+
+    <!-- Shorts-area -->
+    <section id="shorts-section" class="tv-series-area tv-series-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-md-left text-center mb-50">
+                    <h2 class="title pb-2">{{ $shortssectionsheadings->heading }}</h2>
+                    <span class="sub-title short-bfc-title">{!! $shortssectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active owl-carousel">
+                    @foreach($shorts as $short)
+                    <div class="movie-item mb-50" style="display: none;">
+                        <div class="play-btn-watch">
+                            <a href="{{ $short->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s"><i class="fas fa-play"></i> Watch Now</a>
+                        </div>
+                        <div>
+                            <div class="movie-poster shorts-size-fixed">
+                                <img data-src="{{ Storage::disk('s3')->url($short->thumbnail) }}" alt="{{ $short->title }}" class="lazy" loading="lazy">
+                            </div>
+                            <div class="movie-content">
+                                <div class="top d-block">
+                                    <h5 class="title">{!! Str::limit(strip_tags($short->title), 20) !!}</h5>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><span class="quality">hd</span></li>
+                                        <li>
+                                            <span class="duration"><i class="far fa-heart"></i> </span>
+                                            <span class="rating"><i class="fas fa-thumbs-up"></i> </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Shorts-area-end -->
+
+    <!-- newsletter-area -->
+<section class="newsletter-area newsletter-bg" data-background="{{asset('assets/webassets/img/bg/newsletter_bg.jpg')}}">
+    <div class="container">
+        <div class="newsletter-inner-wrap">
+            <div id="enqmsg" style="background:#dff1d8;height:40px;width:250px;display:none">
+                <span style="color:#3c763d;line-height:40px;font-size:15px;"> &nbsp;&nbsp; Thank you For Enquiry </span>
+            </div>
+            <div id="enqerror" style="background:#dff1d8;height:40px;width:250px;display:none">
+                <span style="color:#3c763d;line-height:40px;font-size:15px;"> &nbsp;&nbsp;Failed to send emails. Please try again later.</span>
+            </div>
+            <br />
+            <form action="{{route('sendmail')}}" id="contactForm" autocomplete="off" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="row newsletter-form">
+                            <div class="col-md-6">
+                                <input type="text" id="username" name="name" required placeholder="Enter your Name">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" id="email" name="email" required placeholder="Enter your Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="newsletter-form">
+                            <input type="text" id="message" name="message" required placeholder="Enter your Messages">
+                            <button class="btn" id="ContactBtn" style="height:55px;" name="submit">Send <i class="fa fa-spin fa-spinner" id="contactSpin" style="display:none;"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- newsletter-area-end -->
+
+
+</main>
+<!-- main-area-end -->
+@endsection()
+@push('validation-js')
+
+
+<script defer src="{{asset('assets/webassets/js/form-validation.js')}}"></script>
+<!-- This is Lazy load image js code --->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Lazy Load Images
+    const lazyImages = document.querySelectorAll("img.lazy");
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove("lazy");
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => {
+        imageObserver.observe(img);
+    });
+
+    // Lazy Load Sections
+    const lazySections = document.querySelectorAll("section.lazy-section");
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.display = 'block';
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+
+    lazySections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // Batch Render Items
+    const items = [...document.querySelectorAll('.movie-item')];
+    const batchSize = 10; // Adjust batch size as needed
+    let batchIndex = 0;
+
+    function loadBatch() {
+        const batch = items.slice(batchIndex, batchIndex + batchSize);
+        batch.forEach(item => item.style.display = 'block');
+        batchIndex += batchSize;
+
+        if (batchIndex < items.length) {
+            window.requestAnimationFrame(loadBatch);
+        }
+    }
+
+    loadBatch();
+});
+
+</script>
+<!--This is video section js code --->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('videoCanvas');
+        const ctx = canvas.getContext('2d');
+        const video = document.getElementById('myVideo');
+        const videoUrl = video.dataset.src;
+
+        const tempVideo = document.createElement('video');
+        tempVideo.src = videoUrl;
+
+        tempVideo.addEventListener('loadeddata', function() {
+            canvas.width = video.clientWidth;
+            canvas.height = video.clientHeight;
+            ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+            tempVideo.remove();
+        });
+
+        // Add a load event listener to the video element to replace the canvas when the video is lazy loaded
+        video.addEventListener('lazybeforeunveil', function() {
+            canvas.classList.add('d-none'); // Hide canvas
+            video.classList.remove('d-none'); // Show video
+        });
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lazyVideos = document.querySelectorAll('video.lazyload');
+
+    if ('IntersectionObserver' in window) {
+        let observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let video = entry.target;
+                    for (let source of video.children) {
+                        if (source.tagName === 'SOURCE') {
+                            source.src = source.dataset.src;
+                        }
+                    }
+                    video.load();
+                    observer.unobserve(video); // Stop observing once loaded
+                }
+            });
+        });
+
+        lazyVideos.forEach(video => {
+            observer.observe(video);
+        });
+    }
+});
+</script>
+
+@endpush
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom_xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE application/x-font-woff
+    AddOutputFilterByType DEFLATE application/x-font-woff2
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+</IfModule>
+
+@extends('website.websitelayout.master')
+@section('content')
+
+<!-- main-area -->
+<main>
+
+    <!-- slider-area -->
+    <section class="slider-area slider-bg " data-background="{{ asset('assets/webassets/img/banner/s_slider_bg.jpg') }}">
+    <div class="slider-active mt-5">
+        <div class="slider-item">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 order-0 order-lg-2">
+                        <div class="slider-img text-center" data-animation="fadeInRight" data-delay="1s">
+                            @if (!empty($indexcontent->content))
+                                @if (Str::contains($indexcontent->content, ['.mp4', '.avi', '.mov', '.wmv']))
+                                    <div class="video-container">
+                                        <canvas class="video-thumbnail d-none" id="videoCanvas"></canvas>
+                                        <video class="video_bfc_content24 lazyload" id="myVideo" loop controls muted data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}">
+                                            <source data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" type="video/mp4">
+                                            <source data-src="movie.ogg" type="video/ogg">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                @else
+                                    <img class="video_bfc_content24 lazyload" data-src="{{ Storage::disk('s3')->url($indexcontent->content) }}" alt="">
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="banner-content">
+                            <h6 class="sub-title" data-animation="fadeInUp" data-delay=".2s">{{ $indexcontent->heading }}</h6>
+                            <h2 class="title" data-animation="fadeInUp" data-delay=".4s">{!! $indexcontent->subheading !!}</h2>
+                            <div class="banner-meta" data-animation="fadeInUp" data-delay=".6s">
+                                <p>{!! $indexcontent->description !!}</p>
+                                <ul>
+                                    @if (!empty($indexcontent->attribute))
+                                        @php
+                                            $attributes = json_decode($indexcontent->attribute);
+                                            $totalItems = count($attributes);
+                                        @endphp
+                                        @foreach ($attributes as $index => $item)
+                                            <li class="category" style="margin-right: 7px;">
+                                                <span>{{ $item->value }}{{ $index < $totalItems - 1 ? ',' : '' }}</span>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                    <li class="release-time">
+                                        <span><i class="far fa-calendar-alt"></i> {{ date('Y') }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a href="{{ $indexcontent->watchlink }}" class="banner-btn btn mediabox" data-animation="fadeInUp" data-delay=".8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- slider-area-end -->
+   
+<!-- Top Show-area -->
+<section id="our_bfc_showsfunde17" class="ucm-area ucm-bg lazy-section" >
+    <div class="ucm-bg-shape" data-background="{{ asset('assets/webassets/img/bg/ucm_bg_shape.png') }}"></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $firstsectionsheadings->heading }}</h2>
+                    <span class="teal-text">{!! $firstsectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel top-show-bfcnav-arrow">
+                    @foreach($showtypes as $showtype)
+                    <div class="gallery-item movie-item mb-50" style="display: none;">
+                        @php
+                        // Generate a short hashed representation of the ID
+                        $shortId = base64_encode($showtype->id);
+                        // Construct the URL with parameters
+                        $url = route('showdetails', [
+                            'title' => str_replace(' ', '_', $showtype->title),
+                            'subtitle' => str_replace(' ', '_', $showtype->subtitle),
+                            'id' => $shortId
+                        ]);
+                        @endphp
+                        <a href="{{ $url }}">
+                            <div>
+                                <div class="movie-poster fixed-img-clear">
+                                    <img data-src="{{ Storage::disk('s3')->url($showtype->thumbnail) }}" alt="{{ $showtype->title }}" class="lazy" loading="lazy">
+                                </div>
+                                <div class="movie-content text-left">
+                                    <div class="top d-block">
+                                        <h5 class="title">{{ $showtype->title }}</h5>
+                                    </div>
+                                    <div class="top">
+                                        <h4 class="title logo_color">{{ $showtype->assigned_shows_count }} episodes</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!--Show-end -->
+
+<!-- Show-area -->
+<section id="show-section" class="ucm-area ucm-bg lazy-section">
+    <div class="ucm-bg-shape"></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $secondsectionsheadings->heading }}</h2>
+                    <span class="teal-text">{!! $secondsectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel top-show-bfcnav-arrow">
+                    @foreach($shows as $show)
+                    <div class="gallery-item movie-item" style="display: none;">
+                        <img data-src="{{ Storage::disk('s3')->url($show->thumbnail) }}" alt="{{ $show->title }}" class="lazy" loading="lazy">
+                        <div class="play-btn-watch bfc-long-video">
+                            <a href="{{ $show->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Show-end -->
+
+
+<!-- Show assign -->
+@foreach($assignshowtypes as $index => $showtype)
+@php
+$backgroundImage = $index % 2 === 0 ? asset('assets/webassets/img/bg/ucm_bg.jpg') : '';
+@endphp
+<section class="ucm-area ucm-bg lazy-section lazy-bg" data-background="{{ $backgroundImage }}">
+    <div class="ucm-bg-shape lazy-bg" @if($index % 2 === 0) data-background="{{ asset('assets/webassets/img/bg/ucm_bg_shape.png') }}" @endif></div>
+    <div class="container">
+        <div class="row align-items-end mb-50">
+            <div class="col-lg-6">
+                <div class="section-title text-center text-lg-left">
+                    <h2 class="title teal-text">{{ $showtype->title }}</h2>
+                    <span class="teal-text">{{ $showtype->subtitle }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active-categoryshow owl-carousel">
+                    @foreach($showassigns->where('showtype_id', $showtype->id) as $showassign)
+                    <div class="movie-item mb-50" style="display: none;">
+                        <div class="play-btn-watch">
+                            <a href="{{ $showassign->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s">
+                                <i class="fas fa-play"></i> Watch Now
+                            </a>
+                        </div>
+                        <div>
+                            <div class="movie-poster">
+                                <img data-src="{{ Storage::disk('s3')->url($showassign->thumbnail) }}" alt="{{ $showassign->title }}" onerror="this.onerror=null; this.src='{{ asset('assets/webassets/img/imgnotavailable.svg') }}'; this.classList.add('default-image');" class="lazy" loading="lazy">
+                            </div>
+                            <div class="movie-content">
+                                <div class="top d-block">
+                                    <h5 class="title">{!! Str::limit(strip_tags($showassign->title), 34) !!}</h5>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><span class="quality">hd</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endforeach
+
+
+
+    <!--Show assign end--->
+
+  <!-- Shorts-area -->
+<section id="shorts-section" class="tv-series-area tv-series-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-md-left text-center mb-50">
+                    <h2 class="title pb-2">{{ $shortssectionsheadings->heading }}</h2>
+                    <span class="sub-title short-bfc-title">{!! $shortssectionsheadings->subheading !!}</span>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tvShow" role="tabpanel" aria-labelledby="tvShow-tab">
+                <div class="ucm-active owl-carousel">
+                    @foreach($shorts as $short)
+                    <div class="movie-item mb-50" style="display: none;">
+                        <div class="play-btn-watch">
+                            <a href="{{ $short->url }}?rel=0" class="banner-btn btn mediabox wow fadeInUp" data-wow-delay=".8s" data-wow-duration="1.8s"><i class="fas fa-play"></i> Watch Now</a>
+                        </div>
+                        <div>
+                            <div class="movie-poster shorts-size-fixed">
+                                <img data-src="{{ Storage::disk('s3')->url($short->thumbnail) }}" alt="{{ $short->title }}" class="lazy" loading="lazy">
+                            </div>
+                            <div class="movie-content">
+                                <div class="top d-block">
+                                    <h5 class="title">{!! Str::limit(strip_tags($short->title), 20) !!}</h5>
+                                </div>
+                                <div class="bottom">
+                                    <ul>
+                                        <li><span class="quality">hd</span></li>
+                                        <li>
+                                            <span class="duration"><i class="far fa-heart"></i> </span>
+                                            <span class="rating"><i class="fas fa-thumbs-up"></i> </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Shorts-area-end -->
+
+    <!-- newsletter-area -->
+<section class="newsletter-area newsletter-bg" data-background="{{asset('assets/webassets/img/bg/newsletter_bg.jpg')}}">
+    <div class="container">
+        <div class="newsletter-inner-wrap">
+            <div id="enqmsg" style="background:#dff1d8;height:40px;width:250px;display:none">
+                <span style="color:#3c763d;line-height:40px;font-size:15px;"> &nbsp;&nbsp; Thank you For Enquiry </span>
+            </div>
+            <div id="enqerror" style="background:#dff1d8;height:40px;width:250px;display:none">
+                <span style="color:#3c763d;line-height:40px;font-size:15px;"> &nbsp;&nbsp;Failed to send emails. Please try again later.</span>
+            </div>
+            <br />
+            <form action="{{route('sendmail')}}" id="contactForm" autocomplete="off" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="row newsletter-form">
+                            <div class="col-md-6">
+                                <input type="text" id="username" name="name" required placeholder="Enter your Name">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" id="email" name="email" required placeholder="Enter your Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="newsletter-form">
+                            <input type="text" id="message" name="message" required placeholder="Enter your Messages">
+                            <button class="btn" id="ContactBtn" style="height:55px;" name="submit">Send <i class="fa fa-spin fa-spinner" id="contactSpin" style="display:none;"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- newsletter-area-end -->
+
+
+</main>
+<!-- main-area-end -->
+@endsection()
+@push('validation-js')
+
+
+<script defer src="{{asset('assets/webassets/js/form-validation.js')}}"></script>
+<!-- This is Lazy load image js code --->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const lazyImages = document.querySelectorAll("img.lazy");
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove("lazy");
+                observer.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: "50px 0px", // Adjusted rootMargin for mobile
+        threshold: 0.1 // Adjusted threshold for mobile
+    });
+
+    lazyImages.forEach(img => {
+        imageObserver.observe(img);
+    });
+
+    const lazySections = document.querySelectorAll("section.lazy-section");
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const section = entry.target;
+                const bgImage = section.dataset.background;
+                if (bgImage) {
+                    section.style.backgroundImage = `url(${bgImage})`;
+                }
+                section.querySelectorAll('.lazy-bg').forEach(el => {
+                    const bg = el.dataset.background;
+                    if (bg) {
+                        el.style.backgroundImage = `url(${bg})`;
+                    }
+                });
+                section.style.display = 'block'; // Ensure section is visible
+                observer.unobserve(section);
+            }
+        });
+    }, {
+        rootMargin: "50px 0px", // Adjusted rootMargin for mobile
+        threshold: 0.1 // Adjusted threshold for mobile
+    });
+
+    lazySections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    const items = [...document.querySelectorAll('.movie-item')];
+    const batchSize = 5; // Reduce batch size for mobile
+    let batchIndex = 0;
+
+    function loadBatch() {
+        const batch = items.slice(batchIndex, batchIndex + batchSize);
+        batch.forEach(item => item.style.display = 'block');
+        batchIndex += batchSize;
+
+        if (batchIndex < items.length) {
+            requestIdleCallback(loadBatch, { timeout: 200 });
+        }
+    }
+
+    loadBatch();
+});
+ 
+
+</script>
+<!--This is video section js code --->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('videoCanvas');
+        const ctx = canvas.getContext('2d');
+        const video = document.getElementById('myVideo');
+        const videoUrl = video.dataset.src;
+
+        const tempVideo = document.createElement('video');
+        tempVideo.src = videoUrl;
+
+        tempVideo.addEventListener('loadeddata', function() {
+            canvas.width = video.clientWidth;
+            canvas.height = video.clientHeight;
+            ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+            tempVideo.remove();
+        });
+
+        // Add a load event listener to the video element to replace the canvas when the video is lazy loaded
+        video.addEventListener('lazybeforeunveil', function() {
+            canvas.classList.add('d-none'); // Hide canvas
+            video.classList.remove('d-none'); // Show video
+        });
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lazyVideos = document.querySelectorAll('video.lazyload');
+
+    if ('IntersectionObserver' in window) {
+        let observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let video = entry.target;
+                    for (let source of video.children) {
+                        if (source.tagName === 'SOURCE') {
+                            source.src = source.dataset.src;
+                        }
+                    }
+                    video.load();
+                    observer.unobserve(video); // Stop observing once loaded
+                }
+            });
+        });
+
+        lazyVideos.forEach(video => {
+            observer.observe(video);
+        });
+    }
+});
+</script>
+
+@endpush
+
+<!-----------------------------------------Video section js code -------------------------------------------------------------->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var video = document.getElementById('myVideo');
+        var hasVisited = localStorage.getItem('hasVisited') === 'true'; // Check if the user has visited before
+
+        // Function to attempt video playback
+        function attemptAutoplay() {
+            video.play().catch(function(error) {
+                console.log("Autoplay failed:", error);
+            });
+        }
+
+        // Function to handle the first click to unmute and play the video
+        function handleFirstClick() {
+            video.muted = false; // Unmute the video
+            attemptAutoplay(); // Play the video
+            document.removeEventListener('click', handleFirstClick); // Remove this handler after first use
+        }
+
+        // First visit: set up initial behavior
+        if (!hasVisited) {
+            localStorage.setItem('hasVisited', 'true'); // Mark the visit
+            document.addEventListener('click', handleFirstClick); // Add click listener for the first click
+        } else {
+            // Subsequent visits: play video muted
+            video.muted = true;
+            attemptAutoplay();
+        }
+    });
+</script>
