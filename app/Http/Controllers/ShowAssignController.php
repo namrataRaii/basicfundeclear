@@ -86,12 +86,45 @@ class ShowAssignController extends Controller
                         </div>";
                     }
                 })
+                ->addColumn('publication_status', function ($row) use ($tableName) {
+                    if ($row->publication_status == 1) {
+                        return "<div class='dropdown d-inline-block user-dropdown'>
+                            <button type='button' class='btn text-dark waves-effect' id='page-header-user-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                <div class='badge bg-success-subtle text-success font-size-12'><i class='fa fa-spin fa-spinner' style='display:none' id='PendingSpin{$row->id}'></i>Active</div>
+                                <i class='mdi mdi-chevron-down d-xl-inline-block'></i>
+                            </button>
+                            <div class='dropdown-menu dropdown-menu-end'>
+                                <a class='dropdown-item' style='cursor:pointer;' onclick=\"changePublicationStatus('id', '{$row->id}', 'publication_status', '0', '{$tableName}')\"> Inactive</a> 
+                            </div>
+                        </div>";
+                    } else {
+                        return "<div class='dropdown d-inline-block user-dropdown'>
+                            <button type='button' class='btn text-dark waves-effect' id='page-header-user-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                <span class='d-xl-inline-block ms-1'>
+                                    <div class='badge bg-danger-subtle text-danger font-size-12'><i class='fa fa-spin fa-spinner' style='display:none' id='publicationSpin{$row->id}'></i> Inactive</div>
+                                </span>
+                                <i class='mdi mdi-chevron-down d-xl-inline-block'></i>
+                            </button>
+                            <div class='dropdown-menu dropdown-menu-end'>
+                                <a class='dropdown-item' style='cursor:pointer;' onclick=\"changePublicationStatus('id', '{$row->id}', 'publication_status', '1', '{$tableName}')\"> Active</a>
+                            </div>
+                        </div>";
+                    }
+                })
+                ->addColumn('title', function ($row) {
+                    $words = explode(' ', strip_tags($row->title));
+                    if (count($words) > 5) {
+                        $words = array_slice($words, 0, 5);
+                        return implode(' ', $words) . '...';
+                    }
+                    return $row->title;
+                })
                 ->setRowAttr([
                     'data-id' => function ($row) {
                         return $row->id;
                     },
                 ])
-                ->rawColumns(['action', 'thumbnail', 'show_type', 'status'])
+                ->rawColumns(['action', 'thumbnail', 'show_type', 'status', 'publication_status'])
                 ->make(true);
         }
         return view('admin.showassign', $data);

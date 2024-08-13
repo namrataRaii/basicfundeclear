@@ -208,6 +208,7 @@
                                             <th>Thumbnail</th>
                                             <!-- <th>Description</th> -->
                                             <th>Status</th>
+                                            <th>Publication Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -285,6 +286,7 @@ $(document).ready(function() {
             { data: 'title', name: 'title' },
             { data: 'thumbnail', name: 'thumbnail' },
             { data: 'status', name: 'status' },
+            { data: 'publication_status', name: 'publication_status' },
             { data: 'action', name: 'action', orderable: true, searchable: true }
         ],
         pageLength: 150,

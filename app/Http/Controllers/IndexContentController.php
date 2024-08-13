@@ -89,7 +89,7 @@ class IndexContentController extends Controller
                 'subheading' => 'required',
                 'watchlink' => 'required|url',
                 'attribute' => 'required|string',
-                'content' => 'required|mimes:jpeg,png,jpg,webp,mp4,avi,mov,wmv|max:20480', // Adjust the max size as needed
+                'content' => 'required|mimes:jpeg,png,jpg,webp,mp4,avi,mov,wmv', // Adjust the max size as needed
                 'description' => 'required|string',
                 'metatitle' => 'required|string',
                 'metakey' => 'required|string',

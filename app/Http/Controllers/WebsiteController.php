@@ -73,6 +73,12 @@ class WebsiteController extends Controller
         return view('website.privacypolicy',$data);
     }
 
+    public function termsandconditions()
+    {
+        $data['title'] = 'Terms & Conditions';
+        return view('website.termsandconditions',$data);
+    }
+
 
     public function ShowDetails(Request $request, $title, $subtitle, $id)
     {

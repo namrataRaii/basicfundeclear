@@ -183,7 +183,7 @@
 <script>
     $(document).ready(function() {
         $('#imageInput').change(function() {
-            // alert(1);
+        
             $('#updateProfileForm').submit();
         });
     });

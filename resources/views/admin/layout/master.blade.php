@@ -673,6 +673,45 @@
         }
     </script>
     
+    <!--- Change Publication status -->
+    <script>
+        function changePublicationStatus(where_id, where_id_value, where_column, where_column_value, where_table) {
+
+            // $('.table').html('<i class="fa fa-spinner fa-spin"></i>');
+
+            $.ajax({
+                url: "{{ route('admin.changePublicationStatus') }}", // Replace with your Laravel route
+                type: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "where_id": where_id,
+                    "where_id_value": where_id_value,
+                    "where_column": where_column,
+                    "where_column_value": where_column_value,
+                    "where_table": where_table,
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        // Display success message using Toastr
+                        toastr.success('Update successful');
+
+                        // Reload the page after a delay
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        // Display error message using Toastr
+                        toastr.error('Error: ' + data.message);
+                    }
+                },
+                error: function(error) {
+                    // Display generic error message using Toastr
+                    toastr.error('An error occurred');
+                }
+            });
+        }
+    </script>
+    
 
     <!-- Timepeacker JS-->
 

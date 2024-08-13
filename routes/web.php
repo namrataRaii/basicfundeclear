@@ -37,7 +37,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WebsiteController::class, 'index'])->name('index');
 Route::get('/index', [WebsiteController::class, 'index'])->name('index');
 
-Route::get('/privacypolicy', [WebsiteController::class, 'privacypolicy'])->name('privacypolicy');
+Route::get('/privacy-policy', [WebsiteController::class, 'privacypolicy'])->name('privacypolicy');
+Route::get('/terms&conditions', [WebsiteController::class, 'termsandconditions'])->name('termsandconditions');
 Route::get('/show', [WebsiteController::class, 'index'])->name('show');
 Route::get('/shorts', [WebsiteController::class, 'index'])->name('shorts');
 Route::get('/contact', [WebsiteController::class, 'index'])->name('contact');
@@ -79,6 +80,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/adminprofile', [AdminController::class, 'adminprofile'])->name('updateProfile');
 
         Route::post('/changeStatus', [changeStatusController::class, 'changeStatus'])->name('changeStatus');
+
+        Route::post('/changePublicationStatus', [changeStatusController::class, 'changePublicationStatus'])->name('changePublicationStatus');
 
 
         Route::get('/changePassword', [AdminController::class, 'changePasswordShow'])->name('changePassword');
